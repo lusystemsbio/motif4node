@@ -1,0 +1,10 @@
+vec.names <- c("mean.a", "mean.b", "mean.c", "mean.d", "median.a", "median.b", "median.c", "median.d", "mode.a", "mode.b", "mode.c", "mode.d", "sd.a", "sd.b", "sd.c", "sd.d")
+clust.mat <- matrix(nrow = 60212, ncol = length(vec.names))
+
+
+for(i in 1:length(vec.names)){
+  load(paste0("/work/lulab/Ben/distmat/NEWMAN_SUBSAMPLING/inception/split/Iterative_Subsampling/ASSOCIATION/dimen.red.cluster/", vec.names[[i]]))
+  clust.mat[,i] <- get(vec.names)[[i]]
+}
+save("clust.mat, file = clust.mat")
+

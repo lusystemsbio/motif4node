@@ -1,0 +1,34 @@
+
+library(sRACIPE)
+setwd("core.07")
+for(i in 1:61){
+  load(paste0("/work/lulab/Ben/BenStuff/research/projects/oldhome/scripts/networks/rset/rsetlists/output/rsetlist", i))
+  print(i)
+}
+load("core.names")
+get.info <- function(find.me){
+  find.me <- as.numeric(find.me)
+  if(length(unlist(strsplit(as.character(find.me), split = ""))) <= 3){
+    return(c(0, find.me))
+  } else if((length(unlist(strsplit(as.character(find.me), split = ""))) <= 4) & find.me %% 1000 != 0){
+    return(c(as.numeric(unlist(strsplit(as.character(find.me), split = ""))[1]), as.numeric(paste(as.numeric(unlist(strsplit(as.character(find.me), split = ""))[2:4]), collapse = ""))))
+  } else if((length(unlist(strsplit(as.character(find.me), split = ""))) <= 5)& find.me %% 1000 != 0){
+    return(c(as.numeric(paste(as.numeric(unlist(strsplit(as.character(find.me), split = ""))[1:2]), collapse = "")), as.numeric(paste(as.numeric(unlist(strsplit(as.character(find.me), split = ""))[3:5]), collapse = ""))))
+  } else if(as.numeric(find.me) %% 1000 == 0){
+    return(c(as.numeric(find.me)/1000 - 1, 1000))
+  }
+}
+
+for(i in 1:length(core.names)){
+  load(core.names[[i]])
+  rslt <- core
+  rslt.rset <- vector(mode = "list", length = length(core))
+  for(j in 1:length(rslt)){
+    info <- get.info(rslt[j])
+    rset <- info[[1]] +1
+    index <- info[[2]]
+    rslt.rset[[j]] <- get(paste0("rsetlist", rset))[[index]]
+  } 
+  save(rslt.rset, file = paste0("rslt.rset.07.", core.names[[i]]))
+}
+

@@ -1,0 +1,42 @@
+library(combinat)
+library(igraph)
+#need a matrix for co-occuring
+print("This is REPLACEME")
+co.mat <- matrix(0,60212,60212)
+#and a matrix for same cluster
+ass.mat <- matrix(0,60212,60212)
+
+start <- (REPLACEME*10000) +1
+end <- start + 9999
+#iterate through all clustering results filling out matricies
+combos <- combn(1:1000, 2, simplify = FALSE)
+for(i in start:end){
+  # print(paste0("I is", i))
+  load(paste0("/work/lulab/Ben/distmat/NEWMAN_SUBSAMPLING/inception/split/Iterative_Subsampling/ASSOCIATION/10k/clusters.", i))
+  n <- as.numeric(clusters$names)
+  for(j in 1:length(combos)){
+    # print(paste0("J.1 is ", j))
+    co.mat[n[[combos[[j]][1]]],n[[combos[[j]][2]]]] <- co.mat[n[[combos[[j]][1]]],n[[combos[[j]][2]]]] +1
+    co.mat[n[[combos[[j]][2]]],n[[combos[[j]][1]]]] <- co.mat[n[[combos[[j]][2]]],n[[combos[[j]][1]]]] +1 
+  }
+  for(j in 1:length(clusters)){
+    # print(paste0("J.2 is ", j))
+    c1 <- clusters[[j]]
+    if(length(c1) >1){
+      c.2 <- combn(1:length(c1), 2, simplify = FALSE)
+      for(k in 1:length(c.2)){
+        # print(paste0("K is ", k))
+        ass.mat[as.numeric(c1[[c.2[[k]][1]]]),as.numeric(c1[[c.2[[k]][2]]])] <- ass.mat[as.numeric(c1[[c.2[[k]][1]]]),as.numeric(c1[[c.2[[k]][2]]])] +1
+        ass.mat[as.numeric(c1[[c.2[[k]][2]]]),as.numeric(c1[[c.2[[k]][1]]])] <- ass.mat[as.numeric(c1[[c.2[[k]][2]]]),as.numeric(c1[[c.2[[k]][1]]])] +1    
+      }
+    } 
+  }
+  #print(i)
+  if(i %% 1000 == 0){
+    print(i)
+    save(co.mat, file = "co.mat.REPLACEME")
+    save(ass.mat, file = "ass.mat.REPLACEME")
+  }
+}
+
+

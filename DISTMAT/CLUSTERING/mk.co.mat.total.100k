@@ -1,0 +1,22 @@
+library(sRACIPE)
+library(igraph)
+library(combinat)
+
+
+
+
+
+
+
+for(i in 1:10){
+  if (i == 1){
+    load("/work/lulab/Ben/distmat/NEWMAN_SUBSAMPLING/inception/split/Iterative_Subsampling/ASSOCIATION/output/co.mat")
+    co.mat.total <- co.mat
+    print(i - 1)
+  } else {
+    load(paste0("/work/lulab/Ben/distmat/NEWMAN_SUBSAMPLING/inception/split/Iterative_Subsampling/ASSOCIATION/output/co.mat.", i-1))
+    co.mat.total <- co.mat.total + co.mat
+  }
+}
+save(co.mat.total, file = "/work/lulab/Ben/distmat/NEWMAN_SUBSAMPLING/inception/split/Iterative_Subsampling/ASSOCIATION/output/co.mat.total.100k")
+
