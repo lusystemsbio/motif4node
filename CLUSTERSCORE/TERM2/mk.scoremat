@@ -1,0 +1,13 @@
+load("scorelist.2")
+scoremat <- as.data.frame(matrix(nrow = 60212, ncol = 2))
+scoremat[,1] <- scorelist
+scoremat[,2] <- 1:60212
+scoremat <- scoremat[-which(scoremat[,1] == "NULL"),]
+colnames(scoremat) = c("score", "index")
+scoremat$score = as.numeric(scoremat$score)
+scoremat$index = as.numeric(scoremat$index)
+scoremat = scoremat[order(scoremat$score),]
+save(scoremat, file = "scoremat.2.final")
+
+
+

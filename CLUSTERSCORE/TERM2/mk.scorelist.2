@@ -1,0 +1,20 @@
+scorelist <- vector(length = 60212)
+
+k <- 0
+for(i in 1:61){
+  load(paste0("/work/lulab/Ben/BenStuff/research/projects/oldhome/scripts/networks/clustscore/term2/output/scorelist", i))
+  nme <- paste0("scorelist_term2_", i)
+  skip <- which(get(nme) == "NULL")
+  for(j in 1:length(get(nme))){
+    k <- k+1
+    if(!(j %in% skip)){
+      scorelist[[k]] <- get(nme)[[j]][which.min(get(nme)[[j]])]
+    } else {
+      scorelist[[k]] <- "NULL"
+    }
+    
+  }
+  print(i)
+}
+save(scorelist, file = "scorelist.2")
+
