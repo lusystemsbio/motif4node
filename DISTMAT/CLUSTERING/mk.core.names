@@ -1,3 +1,0 @@
-setwd("/work/lulab/Ben/distmat/NEWMAN_SUBSAMPLING/inception/split/Iterative_Subsampling/ASSOCIATION/clean/core.07")
-core.names <- list.files()
-save(core.names, file = "core.names") 
