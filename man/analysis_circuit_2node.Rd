@@ -2,17 +2,16 @@
 % Please edit documentation in R/analysis.R
 \name{analysis_circuit_2node}
 \alias{analysis_circuit_2node}
-\title{Analysis script to evaluate the state distribution of a two-node gene circuit}
+\title{Analysis script to evaluate the state distribution of a two-node circuit motif}
 \usage{
-analysis_circuit_2node(rSet, numModels = 10000, filename)
+analysis_circuit_2node(tpo, numModels = 10000)
 }
 \arguments{
-\item{rSet}{sRACIPE object. RACIPE simulation data.}
+\item{tpo}{Data frame. Topology data of a two-node circuit motif. 
+The data frame contains three columns: Source, Target, Interaction type}
 
 \item{numModels}{Numeric. Number of models to be simulated. Default: 10000}
-
-\item{filename}{Character. Filename. Default: "myplot".}
 }
 \description{
-Analysis script to evaluate the state distribution of a two-node gene circuit
+Analysis script to evaluate the state distribution of a two-node circuit motif
 }

@@ -4,14 +4,15 @@
 \alias{analysis_circuit_4node}
 \title{Analysis script to evaluate the state distribution of a four-node gene circuit}
 \usage{
-analysis_circuit_4node(rSet, numModels = 10000, filename = "myplot")
+analysis_circuit_4node(rSet, numModels = 10000)
 }
 \arguments{
 \item{rSet}{sRACIPE object. RACIPE simulation data.}
 
 \item{numModels}{Numeric. Number of models to be simulated. Default: 10000}
-
-\item{filename}{Character. Filename. Default: "myplot".}
+}
+\value{
+List. plot objects.
 }
 \description{
 Analysis script to evaluate the state distribution of a four-node gene circuit

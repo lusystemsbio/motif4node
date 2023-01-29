@@ -1,12 +1,12 @@
 #' Analysis script to evaluate the state distribution of a four-node gene circuit
 #' @param rSet sRACIPE object. RACIPE simulation data.
 #' @param numModels Numeric. Number of models to be simulated. Default: 10000
-#' @param filename Character. Filename. Default: "myplot".
+#' @return List. plot objects.
 #' @importFrom webshot webshot
 #' @import sRACIPE
 #' @import SummarizedExperiment
 #' @export
-analysis_circuit_4node <- function(rSet, numModels = 10000, filename = "myplot"){
+analysis_circuit_4node <- function(rSet, numModels = 10000){
   gex = log2(t(assay(rSet)))
   pca = prcomp(gex, center = T, scale = T)
   eigs = pca$sdev^2
@@ -21,14 +21,13 @@ analysis_circuit_4node <- function(rSet, numModels = 10000, filename = "myplot")
   eigs.g = eigs.g / sum(eigs.g)
   ###
   x = plot_net(sracipeCircuit(rSet))
-  saveWidget(x, paste0(filename, ".html"))
-  webshot(paste0(filename, ".html"), paste0(filename, ".png"))
+  
   ###
   gex.1  = ggplot(data = as.data.frame(gex), aes_string(x = "A", y = "B")) +
     geom_point() +
     theme_classic()
   
-  gex.2  = ggplot(data = as.data.frame(gex), aes_string(x = "A", y = "c")) +
+  gex.2  = ggplot(data = as.data.frame(gex), aes_string(x = "A", y = "C")) +
     geom_point() +
     theme_classic()
   
@@ -47,9 +46,9 @@ analysis_circuit_4node <- function(rSet, numModels = 10000, filename = "myplot")
   gex.6  = ggplot(data = as.data.frame(gex), aes_string(x = "C", y = "D")) +
     geom_point() +
     theme_classic()
-  
-  plot_grid(gex.1, gex.2, gex.3, gex.4, gex.5, gex.6)
-  ggsave(paste0(filename, "_gex.pdf"), width = 16, height = 9)
+
+  rslt =vector(mode = "list", length = 6) 
+  rslt[[1]] = plot_grid(gex.1, gex.2, gex.3, gex.4, gex.5, gex.6)
   
   ###
   pca.1  = ggplot(data = as.data.frame(pca$x), aes_string(x = "PC1", y = "PC2")) +
@@ -71,15 +70,14 @@ analysis_circuit_4node <- function(rSet, numModels = 10000, filename = "myplot")
     geom_point() +
     theme_classic()+
     labs( x = paste0("PC2 ",round(eigs[[2]],3)*100, "%" ), y =paste0("PC3 ",round(eigs[[3]],3)*100, "%" ) )
-  
-  ggdraw() +
+ 
+  rslt[[2]] = ggdraw() +
     draw_plot(pca.1, 0, .5, .5, .5) +
     draw_plot(pca.2, .5, .5, .5, .5) +
     draw_plot(pca.3, 0, 0, .5, .5) +
     draw_plot(pca.4, .5, 0, .5, .5) +
     draw_plot_label(c("A", "B", "C", "D"), c(0, 0.5, 0, 0.5), c(1,1, 0.5, 0.5), size = 15)
   
-  ggsave(paste0(filename, "_PCA.pdf"))
   ####
   c.1 = ggplot(data = as.data.frame(pca$x), aes_string(x = "PC1", y  = "PC2")) + 
     stat_density_2d(aes_string (fill = "..level.."), geom = "polygon", bins = 30) +
@@ -102,14 +100,13 @@ analysis_circuit_4node <- function(rSet, numModels = 10000, filename = "myplot")
     theme_classic() +
     theme(legend.position="none")
   
-  ggdraw() +
+  rslt[[3]] = ggdraw() +
     draw_plot(c.1, 0, .5, .5, .5) +
     draw_plot(c.2, .5, .5, .5, .5) +
     draw_plot(c.3, 0, 0, .5, .5) +
     draw_plot(c.4, .5, 0, .5, .5) +
     draw_plot_label(c("E", "F", "G", "H"), c(0, 0.5, 0, 0.5), c(1,1, 0.5, 0.5), size = 15)
   
-  ggsave(paste0(filename, "_Countour.pdf"))
   ####
   pca.1.g  = ggplot(data = as.data.frame(pca.g$x), aes_string(x = "PC1", y = "PC2")) +
     geom_point() +
@@ -131,7 +128,7 @@ analysis_circuit_4node <- function(rSet, numModels = 10000, filename = "myplot")
     theme_classic()+
     labs( x = paste0("PC2 ",round(eigs.g[[2]],3)*100, "%" ), y =paste0("PC3 ",round(eigs.g[[3]],3)*100, "%" ) )
   
-  ggdraw() +
+ rslt[[4]] =  ggdraw() +
     draw_plot(pca.1.g, 0, .5, .5, .5) +
     draw_plot(pca.2.g, .5, .5, .5, .5) +
     draw_plot(pca.3.g, 0, 0, .5, .5) +
@@ -139,7 +136,6 @@ analysis_circuit_4node <- function(rSet, numModels = 10000, filename = "myplot")
     draw_plot_label(c("A", "B", "C", "D"), c(0, 0.5, 0, 0.5), c(1,1, 0.5, 0.5), size = 15)
   
   
-  ggsave(paste0(filename, "_PCA_G.pdf"))
   ####
   
   c.1.g = ggplot(data = as.data.frame(pca.g$x), aes_string(x = "PC1", y  = "PC2")) + 
@@ -163,21 +159,20 @@ analysis_circuit_4node <- function(rSet, numModels = 10000, filename = "myplot")
     theme_classic() +
     theme(legend.position="none")
   
-  ggdraw() +
+  rslt[[5]] = ggdraw() +
     draw_plot(c.1.g, 0, .5, .5, .5) +
     draw_plot(c.2.g, .5, .5, .5, .5) +
     draw_plot(c.3.g, 0, 0, .5, .5) +
     draw_plot(c.4.g, .5, 0, .5, .5) +
     draw_plot_label(c("E", "F", "G", "H"), c(0, 0.5, 0, 0.5), c(1,1, 0.5, 0.5), size = 15)
-  
-  ggsave(paste0(filename, "_Countour_G_.pdf"))
-  
+  rslt[[6]] = x
+return(rslt)
 }
 
-#' Analysis script to evaluate the state distribution of a two-node gene circuit
-#' @param rSet sRACIPE object. RACIPE simulation data.
+#' Analysis script to evaluate the state distribution of a two-node circuit motif
+#' @param tpo Data frame. Topology data of a two-node circuit motif. 
+#' The data frame contains three columns: Source, Target, Interaction type
 #' @param numModels Numeric. Number of models to be simulated. Default: 10000
-#' @param filename Character. Filename. Default: "myplot".
 #' @import SummarizedExperiment
 #' @import sRACIPE
 #' @import htmlwidgets
@@ -186,7 +181,8 @@ analysis_circuit_4node <- function(rSet, numModels = 10000, filename = "myplot")
 #' @importFrom webshot webshot
 #' @importFrom stats prcomp
 #' @export
-analysis_circuit_2node <- function(rSet, numModels = 10000, filename){
+analysis_circuit_2node <- function(tpo, numModels = 10000){
+  rSet = sracipeSimulate(tpo, numModels = numModels)
   gex = log2(t(assay(rSet)))
   pca = prcomp(gex, center = T, scale = T)
   eigs = pca$sdev^2
@@ -200,8 +196,6 @@ analysis_circuit_2node <- function(rSet, numModels = 10000, filename){
   eigs.g = eigs.g / sum(eigs.g)
   ###
   x = plot_net(sracipeCircuit(rSet))
-  saveWidget(x, paste0(filename, ".html"))
-  webshot(paste0(filename, ".html"), paste0(filename, ".png"))
   ###
   gex.1  = ggplot(data = as.data.frame(gex), aes_string(x = "A", y = "B")) +
     geom_point() +
@@ -226,7 +220,38 @@ analysis_circuit_2node <- function(rSet, numModels = 10000, filename){
     geom_density_2d(colour = "white", bins = 30) +
     theme_classic()
   
-  plot_grid(gex.1, c.1, gex.3, c.1.g)
-  ggsave(paste0(filename, "_anal.pdf"), width = 16, height = 9)
-  
+  return(plot_grid(gex.1, c.1, gex.3, c.1.g))
+
+}
+
+#' Convert an adjacency matrix to a topology
+#' @param adj the adjacency martix to be converted to a topology file
+#' @export
+adj_to_tpo <- function(adj){
+  seq.adj <- adj
+  tmp2 <- as.data.frame(matrix(ncol = 3))
+  colnames(tmp2) <- c("source", "target", "type")
+  k <- 0
+  for (i in 1:ncol(seq.adj)){
+    for (j in 1:ncol(seq.adj)){
+      if (seq.adj[[i,j]] == 1){
+        k <- k+1
+        tmp2[k,1] <- colnames(seq.adj)[j]
+        tmp2[k,2] <- rownames(seq.adj)[i]
+        tmp2[k,3] <- 1
+      } else if(seq.adj[[i,j]] == 2){
+        k <- k+1
+        tmp2[k,1] <- colnames(seq.adj)[j]
+        tmp2[k,2] <- rownames(seq.adj)[i]
+        tmp2[k,3] <- 2
+      }else if(seq.adj[[i,j]] == 0){
+        k <- k+1
+        tmp2[k,1] <- colnames(seq.adj)[j]
+        tmp2[k,2] <- rownames(seq.adj)[i]
+        tmp2[k,3] <- 0
+      }
+    }
+  }
+  tmp2 <- tmp2[tmp2$type != 0,]
+  return(tmp2)
 }

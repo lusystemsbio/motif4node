@@ -76,22 +76,136 @@ motif_analysis <- function(all.circuits = all.circuits, all.scores, ylim = NULL,
   return(list(single = p, coupling_0 = plot_t0, coupling_1 = plot_t1, coupling_2 = plot_t2))
 }
 
+#' Generate a list of all 72 2-node circuit motifs (including redundant ones)
+#' @return list of all 72 2-node circuit motifs
+#' @export
+generate_motif_list <- function() {
+  motif_list = list()
+  motif_list[[1]] <- matrix(c(0,1,0,0), nrow = 2, ncol = 2)
+  motif_list[[2]] <- matrix(c(1,1,0,0), nrow = 2, ncol = 2)
+  motif_list[[3]] <- matrix(c(1,1,0,1), nrow = 2, ncol = 2)
+  motif_list[[4]] <- matrix(c(0,1,0,1), nrow = 2, ncol = 2)
+  motif_list[[5]] <- matrix(c(2,1,0,0), nrow = 2, ncol = 2)
+  motif_list[[6]] <- matrix(c(0,1,0,2), nrow = 2, ncol = 2)
+  motif_list[[7]] <- matrix(c(2,1,0,2), nrow = 2, ncol = 2)
+  motif_list[[8]] <- matrix(c(1,1,0,2), nrow = 2, ncol = 2)
+  motif_list[[9]] <- matrix(c(2,1,0,1), nrow = 2, ncol = 2)
+  
+  ##B 10 : 18
+  motif_list[[10]] <- matrix(c(0,2,0,0), nrow = 2, ncol = 2)
+  motif_list[[11]] <- matrix(c(1,2,0,0), nrow = 2, ncol = 2)
+  motif_list[[12]] <- matrix(c(1,2,0,1), nrow = 2, ncol = 2)
+  motif_list[[13]] <- matrix(c(0,2,0,1), nrow = 2, ncol = 2)
+  motif_list[[14]] <- matrix(c(2,2,0,0), nrow = 2, ncol = 2)
+  motif_list[[15]] <- matrix(c(0,2,0,2), nrow = 2, ncol = 2)
+  motif_list[[16]] <- matrix(c(2,2,0,2), nrow = 2, ncol = 2)
+  motif_list[[17]] <- matrix(c(1,2,0,2), nrow = 2, ncol = 2)
+  motif_list[[18]] <- matrix(c(2,2,0,1), nrow = 2, ncol = 2)
+  
+  #C 19 : 27
+  motif_list[[19]] <- matrix(c(0,1,1,0), nrow = 2, ncol = 2)
+  motif_list[[20]] <- matrix(c(1,1,1,0), nrow = 2, ncol = 2)
+  motif_list[[21]] <- matrix(c(1,1,1,1), nrow = 2, ncol = 2)
+  motif_list[[22]] <- matrix(c(0,1,1,1), nrow = 2, ncol = 2)
+  motif_list[[23]] <- matrix(c(2,1,1,0), nrow = 2, ncol = 2)
+  motif_list[[24]] <- matrix(c(0,1,1,2), nrow = 2, ncol = 2)
+  motif_list[[25]] <- matrix(c(2,1,1,2), nrow = 2, ncol = 2)
+  motif_list[[26]] <- matrix(c(1,1,1,2), nrow = 2, ncol = 2)
+  motif_list[[27]] <- matrix(c(2,1,1,1), nrow = 2, ncol = 2)
+  
+  #D 28 : 36
+  motif_list[[28]] <- matrix(c(0,1,2,0), nrow = 2, ncol = 2)
+  motif_list[[29]] <- matrix(c(1,1,2,0), nrow = 2, ncol = 2)
+  motif_list[[30]] <- matrix(c(1,1,2,1), nrow = 2, ncol = 2)
+  motif_list[[31]] <- matrix(c(0,1,2,1), nrow = 2, ncol = 2)
+  motif_list[[32]] <- matrix(c(2,1,2,0), nrow = 2, ncol = 2)
+  motif_list[[33]] <- matrix(c(0,1,2,2), nrow = 2, ncol = 2)
+  motif_list[[34]] <- matrix(c(2,1,2,2), nrow = 2, ncol = 2)
+  motif_list[[35]] <- matrix(c(1,1,2,2), nrow = 2, ncol = 2)
+  motif_list[[36]] <- matrix(c(2,1,2,1), nrow = 2, ncol = 2)
+  
+  #E 37 : 45
+  motif_list[[37]] <- matrix(c(0,2,2,0), nrow = 2, ncol = 2)
+  motif_list[[38]] <- matrix(c(1,2,2,0), nrow = 2, ncol = 2)
+  motif_list[[39]] <- matrix(c(1,2,2,1), nrow = 2, ncol = 2)
+  motif_list[[40]] <- matrix(c(0,2,2,1), nrow = 2, ncol = 2)
+  motif_list[[41]] <- matrix(c(2,2,2,0), nrow = 2, ncol = 2)
+  motif_list[[42]] <- matrix(c(0,2,2,2), nrow = 2, ncol = 2)
+  motif_list[[43]] <- matrix(c(2,2,2,2), nrow = 2, ncol = 2)
+  motif_list[[44]] <- matrix(c(1,2,2,2), nrow = 2, ncol = 2)
+  motif_list[[45]] <- matrix(c(2,2,2,1), nrow = 2, ncol = 2)
+  
+  #F 46 : 54
+  motif_list[[46]] <- matrix(c(0,2,1,0), nrow = 2, ncol = 2)
+  motif_list[[47]] <- matrix(c(1,2,1,0), nrow = 2, ncol = 2)
+  motif_list[[48]] <- matrix(c(1,2,1,1), nrow = 2, ncol = 2)
+  motif_list[[49]] <- matrix(c(0,2,1,1), nrow = 2, ncol = 2)
+  motif_list[[50]] <- matrix(c(2,2,1,0), nrow = 2, ncol = 2)
+  motif_list[[51]] <- matrix(c(0,2,1,2), nrow = 2, ncol = 2)
+  motif_list[[52]] <- matrix(c(2,2,1,2), nrow = 2, ncol = 2)
+  motif_list[[53]] <- matrix(c(1,2,1,2), nrow = 2, ncol = 2)
+  motif_list[[54]] <- matrix(c(2,2,1,1), nrow = 2, ncol = 2)
+  
+  # G 55:63
+  motif_list[[55]] <- matrix(c(0,0,1,0), nrow = 2, ncol = 2)
+  motif_list[[56]] <- matrix(c(1,0,1,0), nrow = 2, ncol = 2)
+  motif_list[[57]] <- matrix(c(1,0,1,1), nrow = 2, ncol = 2)
+  motif_list[[58]] <- matrix(c(0,0,1,1), nrow = 2, ncol = 2)
+  motif_list[[59]] <- matrix(c(2,0,1,0), nrow = 2, ncol = 2)
+  motif_list[[60]] <- matrix(c(0,0,1,2), nrow = 2, ncol = 2)
+  motif_list[[61]] <- matrix(c(2,0,1,2), nrow = 2, ncol = 2)
+  motif_list[[62]] <- matrix(c(1,0,1,2), nrow = 2, ncol = 2)
+  motif_list[[63]] <- matrix(c(2,0,1,1), nrow = 2, ncol = 2)
+  
+  #H 64:72
+  motif_list[[64]] <- matrix(c(0,0,2,0), nrow = 2, ncol = 2)
+  motif_list[[65]] <- matrix(c(1,0,2,0), nrow = 2, ncol = 2)
+  motif_list[[66]] <- matrix(c(1,0,2,1), nrow = 2, ncol = 2)
+  motif_list[[67]] <- matrix(c(0,0,2,1), nrow = 2, ncol = 2)
+  motif_list[[68]] <- matrix(c(2,0,2,0), nrow = 2, ncol = 2)
+  motif_list[[69]] <- matrix(c(0,0,2,2), nrow = 2, ncol = 2)
+  motif_list[[70]] <- matrix(c(2,0,2,2), nrow = 2, ncol = 2)
+  motif_list[[71]] <- matrix(c(1,0,2,2), nrow = 2, ncol = 2)
+  motif_list[[72]] <- matrix(c(2,0,2,1), nrow = 2, ncol = 2)
+  
+  return(motif_list)
+}
+
 #' Generate permutations for p-value calculations
 #' @param all.circuits List of the topologies of all 60212 non-redundant 4-node circuits. Default "all.circuits" from the package data.
 #' @param all.scores Data frame. 1st column: scores; 2nd column: circuit index. The data frame is ordered by the scores.
 #' @param decreasing  Logical. Whether circuits are ranked by the scores in a decreasing order (T) or not (F). Default T.
 #' @param topCircuits Integer. Number of top circuits for the enrichment analysis. Default 600.
-#' @param no_perm Integer. Number of permutations.
-#' @return List of permuted enrichment scores.
+#' @param nhill Integer/Numeric. Hill coefficient for the Hill function as the weighting factor for motif counts, 
+#' large n makes the Hill function more binary. Default 20.
+#' @param num_perm Integer. Number of permutations. (1000)
+#' @return Numeric vector. Adjusted p values for the enrichement of each two-node circuit motif (a total of 39)
+#' @importFrom stats p.adjust
 #' @export
-single_motif_permute <- function(all.circuits = all.circuits, all.scores, decreasing = T, topCircuits = 600, 
-                                 no_perm){
+single_motif_permute <- function(all.circuits = all.circuits, all.scores, decreasing = T, topCircuits = 600, nhill = 20,
+                                 num_perm = 1000){
   new_ind = generate_index_conversion()
   motif_list = generate_motif_list()
-  outcome_single = enrichment_single(all.circuits, all.scores, motif_list, new_ind, decreasing = decreasing, topCircuits = topCircuits)
-  perm.values = lapply(1:no_perm, gen_ran_enrich, all.circuits = all.circuits, all.scores = all.scores, 
-                       motif_list, new_ind, topCircuits = topCircuits)
-  return(list(unlist(list(outcome_single, unlist(perm.values)))))
+  outcome_single = enrichment_single(all.circuits = all.circuits, all.scores = all.scores, motif_list = motif_list, 
+                                     new_ind = new_ind, decreasing = decreasing, topCircuits = topCircuits, nhill = nhill)
+  
+  perm_values = replicate(num_perm, gen_ran_enrich(all.circuits = all.circuits, all.scores = all.scores,
+                                                   motif_list = motif_list, new_ind = new_ind, decreasing = decreasing, 
+                                                   topCircuits = topCircuits, nhill = nhill))
+                          
+  results = cbind(outcome_single, do.call(cbind, perm_values))
+  pvalues = apply(results, 1, function(x) {
+    n_perm = length(x) - 1
+    if(x[1] >= 0){
+      count = sum(x[1] < x[2:(n_perm+1)])
+    }
+    else{
+      count = sum(x[1] > x[2:(n_perm+1)])
+    }
+    return (count/n_perm)})
+  
+  adj_pvalues = p.adjust(pvalues, method = "BH")
+  return(adj_pvalues)
 }
 
 #' Motif enrichment analysis for single two-node circuit motifs
@@ -280,9 +394,12 @@ circuit_grouping <- function(){
 }
 
 # Generate a vector of enrichment scores by a random permutation
-gen_ran_enrich <- function(all.circuits = all.circuits, all.scores, motif_list, new_ind, topCircuits = 600){
+gen_ran_enrich <- function(all.circuits = all.circuits, all.scores, motif_list, new_ind, decreasing = decreasing,
+                           topCircuits = 600, nhill = 20){
+  scoremat[,1] = all.scores[,1]
   scoremat[,2] = sample(all.scores[,2])
-  return(enrichment_single(all.circuits, scoremat, motif_list, new_ind, decreasing = F, topCircuits = topCircuits))
+  return(enrichment_single(all.circuits = all.circuits, all.scores = scoremat, motif_list = motif_list, 
+                           new_ind = new_ind, decreasing = decreasing, topCircuits = topCircuits, nhill = nhill))
 }
 
 # Find all 2-node circuit motifs from a 4-node circuit & the location of the motifs in the 4-node circuit
@@ -372,99 +489,6 @@ find_interactions_2node_new <- function(mat, motif_list, new_ind, overlap_list){
   }
   
   return(combo_list)
-}
-
-# Generate a list of all 72 2-node circuit motifs (including redundant ones)
-generate_motif_list <- function() {
-  motif_list = list()
-  motif_list[[1]] <- matrix(c(0,1,0,0), nrow = 2, ncol = 2)
-  motif_list[[2]] <- matrix(c(1,1,0,0), nrow = 2, ncol = 2)
-  motif_list[[3]] <- matrix(c(1,1,0,1), nrow = 2, ncol = 2)
-  motif_list[[4]] <- matrix(c(0,1,0,1), nrow = 2, ncol = 2)
-  motif_list[[5]] <- matrix(c(2,1,0,0), nrow = 2, ncol = 2)
-  motif_list[[6]] <- matrix(c(0,1,0,2), nrow = 2, ncol = 2)
-  motif_list[[7]] <- matrix(c(2,1,0,2), nrow = 2, ncol = 2)
-  motif_list[[8]] <- matrix(c(1,1,0,2), nrow = 2, ncol = 2)
-  motif_list[[9]] <- matrix(c(2,1,0,1), nrow = 2, ncol = 2)
-  
-  ##B 10 : 18
-  motif_list[[10]] <- matrix(c(0,2,0,0), nrow = 2, ncol = 2)
-  motif_list[[11]] <- matrix(c(1,2,0,0), nrow = 2, ncol = 2)
-  motif_list[[12]] <- matrix(c(1,2,0,1), nrow = 2, ncol = 2)
-  motif_list[[13]] <- matrix(c(0,2,0,1), nrow = 2, ncol = 2)
-  motif_list[[14]] <- matrix(c(2,2,0,0), nrow = 2, ncol = 2)
-  motif_list[[15]] <- matrix(c(0,2,0,2), nrow = 2, ncol = 2)
-  motif_list[[16]] <- matrix(c(2,2,0,2), nrow = 2, ncol = 2)
-  motif_list[[17]] <- matrix(c(1,2,0,2), nrow = 2, ncol = 2)
-  motif_list[[18]] <- matrix(c(2,2,0,1), nrow = 2, ncol = 2)
-  
-  #C 19 : 27
-  motif_list[[19]] <- matrix(c(0,1,1,0), nrow = 2, ncol = 2)
-  motif_list[[20]] <- matrix(c(1,1,1,0), nrow = 2, ncol = 2)
-  motif_list[[21]] <- matrix(c(1,1,1,1), nrow = 2, ncol = 2)
-  motif_list[[22]] <- matrix(c(0,1,1,1), nrow = 2, ncol = 2)
-  motif_list[[23]] <- matrix(c(2,1,1,0), nrow = 2, ncol = 2)
-  motif_list[[24]] <- matrix(c(0,1,1,2), nrow = 2, ncol = 2)
-  motif_list[[25]] <- matrix(c(2,1,1,2), nrow = 2, ncol = 2)
-  motif_list[[26]] <- matrix(c(1,1,1,2), nrow = 2, ncol = 2)
-  motif_list[[27]] <- matrix(c(2,1,1,1), nrow = 2, ncol = 2)
-  
-  #D 28 : 36
-  motif_list[[28]] <- matrix(c(0,1,2,0), nrow = 2, ncol = 2)
-  motif_list[[29]] <- matrix(c(1,1,2,0), nrow = 2, ncol = 2)
-  motif_list[[30]] <- matrix(c(1,1,2,1), nrow = 2, ncol = 2)
-  motif_list[[31]] <- matrix(c(0,1,2,1), nrow = 2, ncol = 2)
-  motif_list[[32]] <- matrix(c(2,1,2,0), nrow = 2, ncol = 2)
-  motif_list[[33]] <- matrix(c(0,1,2,2), nrow = 2, ncol = 2)
-  motif_list[[34]] <- matrix(c(2,1,2,2), nrow = 2, ncol = 2)
-  motif_list[[35]] <- matrix(c(1,1,2,2), nrow = 2, ncol = 2)
-  motif_list[[36]] <- matrix(c(2,1,2,1), nrow = 2, ncol = 2)
-  
-  #E 37 : 45
-  motif_list[[37]] <- matrix(c(0,2,2,0), nrow = 2, ncol = 2)
-  motif_list[[38]] <- matrix(c(1,2,2,0), nrow = 2, ncol = 2)
-  motif_list[[39]] <- matrix(c(1,2,2,1), nrow = 2, ncol = 2)
-  motif_list[[40]] <- matrix(c(0,2,2,1), nrow = 2, ncol = 2)
-  motif_list[[41]] <- matrix(c(2,2,2,0), nrow = 2, ncol = 2)
-  motif_list[[42]] <- matrix(c(0,2,2,2), nrow = 2, ncol = 2)
-  motif_list[[43]] <- matrix(c(2,2,2,2), nrow = 2, ncol = 2)
-  motif_list[[44]] <- matrix(c(1,2,2,2), nrow = 2, ncol = 2)
-  motif_list[[45]] <- matrix(c(2,2,2,1), nrow = 2, ncol = 2)
-  
-  #F 46 : 54
-  motif_list[[46]] <- matrix(c(0,2,1,0), nrow = 2, ncol = 2)
-  motif_list[[47]] <- matrix(c(1,2,1,0), nrow = 2, ncol = 2)
-  motif_list[[48]] <- matrix(c(1,2,1,1), nrow = 2, ncol = 2)
-  motif_list[[49]] <- matrix(c(0,2,1,1), nrow = 2, ncol = 2)
-  motif_list[[50]] <- matrix(c(2,2,1,0), nrow = 2, ncol = 2)
-  motif_list[[51]] <- matrix(c(0,2,1,2), nrow = 2, ncol = 2)
-  motif_list[[52]] <- matrix(c(2,2,1,2), nrow = 2, ncol = 2)
-  motif_list[[53]] <- matrix(c(1,2,1,2), nrow = 2, ncol = 2)
-  motif_list[[54]] <- matrix(c(2,2,1,1), nrow = 2, ncol = 2)
-  
-  # G 55:63
-  motif_list[[55]] <- matrix(c(0,0,1,0), nrow = 2, ncol = 2)
-  motif_list[[56]] <- matrix(c(1,0,1,0), nrow = 2, ncol = 2)
-  motif_list[[57]] <- matrix(c(1,0,1,1), nrow = 2, ncol = 2)
-  motif_list[[58]] <- matrix(c(0,0,1,1), nrow = 2, ncol = 2)
-  motif_list[[59]] <- matrix(c(2,0,1,0), nrow = 2, ncol = 2)
-  motif_list[[60]] <- matrix(c(0,0,1,2), nrow = 2, ncol = 2)
-  motif_list[[61]] <- matrix(c(2,0,1,2), nrow = 2, ncol = 2)
-  motif_list[[62]] <- matrix(c(1,0,1,2), nrow = 2, ncol = 2)
-  motif_list[[63]] <- matrix(c(2,0,1,1), nrow = 2, ncol = 2)
-  
-  #H 64:72
-  motif_list[[64]] <- matrix(c(0,0,2,0), nrow = 2, ncol = 2)
-  motif_list[[65]] <- matrix(c(1,0,2,0), nrow = 2, ncol = 2)
-  motif_list[[66]] <- matrix(c(1,0,2,1), nrow = 2, ncol = 2)
-  motif_list[[67]] <- matrix(c(0,0,2,1), nrow = 2, ncol = 2)
-  motif_list[[68]] <- matrix(c(2,0,2,0), nrow = 2, ncol = 2)
-  motif_list[[69]] <- matrix(c(0,0,2,2), nrow = 2, ncol = 2)
-  motif_list[[70]] <- matrix(c(2,0,2,2), nrow = 2, ncol = 2)
-  motif_list[[71]] <- matrix(c(1,0,2,2), nrow = 2, ncol = 2)
-  motif_list[[72]] <- matrix(c(2,0,2,1), nrow = 2, ncol = 2)
-  
-  return(motif_list)
 }
 
 #' Convert redundant indices to the indices for all 39 non-redundant motifs 
@@ -566,7 +590,11 @@ hill <- function(x, x0, n) {
   return(1/(1+y))
 }
 
-# Obtain the adjacency matrix for a specific circuit motif (number should be from 1 to 39)
+#' Obtain the adjacency matrix for a specific two-node circuit motif (number should be from 1 to 39)
+#' @param number Integer. Index of the two-node circuit motif.
+#' @param motif_list List of 2 by 2 integer matrix. 2-node motif info generated by the function: generate_motif_list.
+#' @return Integer matrix. 2 by 2 adjacency matrix.
+#' @export
 get_motif_adj <- function(number, motif_list){
   if (number > 39){
     print("Warning, the motif number is more than 39")
@@ -659,16 +687,16 @@ gen_network_scalefree <- function(num_nodes, motif_list, motif_choice){
     if(length(motif_choice) == 1){
       choice <- sample(1:2, 1)
       if(choice == 1){
-        new.mat[y1:y2, y1:y2] <- get_motif_adj(motif_choice)
+        new.mat[y1:y2, y1:y2] <- get_motif_adj(motif_choice, motif_list)
       } else {
-        new.mat[y2:y1,y2:y1] <- get_motif_adj(motif_choice)
+        new.mat[y2:y1,y2:y1] <- get_motif_adj(motif_choice, motif_list)
       }
     } else {
       choice <- sample(1:2, 1)
       if(choice == 1){
-        new.mat[y1:y2, y1:y2] <- get_motif_adj(sample(motif_choice,1))
+        new.mat[y1:y2, y1:y2] <- get_motif_adj(sample(motif_choice,1), motif_list)
       } else {
-        new.mat[y2:y1,y2:y1] <- get_motif_adj(sample(motif_choice,1))
+        new.mat[y2:y1,y2:y1] <- get_motif_adj(sample(motif_choice,1), motif_list)
       }
     }
     

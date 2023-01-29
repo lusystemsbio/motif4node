@@ -5,8 +5,9 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.width =
 library(motif4node)
 library(ggplot2)
 library(pheatmap)
+library(sRACIPE)
 set.seed(43)
-data("all.circuits")
+data("all_circuits")
 
 ## -----------------------------------------------------------------------------
 test = sim_4node(index = 11940, Gaussian = F, numModels = 200, all.circuits = all.circuits)
@@ -37,6 +38,14 @@ motif_results = motif_analysis(all.circuits = all.circuits, all.scores = scorema
 
 ## ---- fig.width = 9, fig.height = 5-------------------------------------------
 motif_results$single # single motif enrichment
+
+## -----------------------------------------------------------------------------
+m = generate_motif_list()
+#plot_motif(36, m)
+
+## -----------------------------------------------------------------------------
+net = gen_network_scalefree(num_nodes = 20, motif_list = m, motif_choice = c(36,1,31))
+#plot_adj(net)
 
 ## -----------------------------------------------------------------------------
 sessionInfo()

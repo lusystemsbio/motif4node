@@ -34,22 +34,22 @@ plot_RACIPE <- function(rset){
   pca = prcomp(gex, center = T, scale = T)
   eigs = pca$sdev^2
   eigs = eigs / sum(eigs)
-  pca.1  = ggplot(data = as.data.frame(pca$x), aes_string(x = "-PC1", y = "-PC2")) +
+  pca.1  = ggplot(data = as.data.frame(pca$x), aes_string(x = "PC1", y = "PC2")) +
     geom_point() +
     theme_classic() +
     labs( x = paste0("PC1 ",round(eigs[[1]],3)*100, "%" ), y =paste0("PC2 ",round(eigs[[2]],3)*100, "%" ) )
   
-  pca.2 = ggplot(data = as.data.frame(pca$x), aes_string(x = "-PC1", y = "PC3")) +
+  pca.2 = ggplot(data = as.data.frame(pca$x), aes_string(x = "PC1", y = "PC3")) +
     geom_point() +
     theme_classic()+
     labs( x = paste0("PC1 ",round(eigs[[1]],3)*100, "%" ), y =paste0("PC3 ",round(eigs[[3]],3)*100, "%" ) )
   
-  pca.3 = ggplot(data = as.data.frame(pca$x), aes_string(x = "-PC1", y = "PC4")) +
+  pca.3 = ggplot(data = as.data.frame(pca$x), aes_string(x = "PC1", y = "PC4")) +
     geom_point() +
     theme_classic()+
     labs( x = paste0("PC1 ",round(eigs[[1]],3)*100, "%" ), y =paste0("PC4 ",round(eigs[[4]],3)*100, "%" ) )
   
-  pca.4 = ggplot(data = as.data.frame(pca$x), aes_string(x = "-PC2", y = "PC3")) +
+  pca.4 = ggplot(data = as.data.frame(pca$x), aes_string(x = "PC2", y = "PC3")) +
     geom_point() +
     theme_classic()+
     labs( x = paste0("PC2 ",round(eigs[[2]],3)*100, "%" ), y =paste0("PC3 ",round(eigs[[3]],3)*100, "%" ) )
@@ -118,31 +118,29 @@ plot_motif <- function(number, motif_list){
 #' @return empty
 #' @export
 plot_adj <- function(adj){
-  seq.adj <- adj
   tmp2 <- as.data.frame(matrix(ncol = 3))
   colnames(tmp2) <- c("from", "to", "arrows.to.type")
   k <- 0
-  for (i in 1:ncol(seq.adj)){
-    for (j in 1:ncol(seq.adj)){
-      if (seq.adj[[i,j]] == 1){
+  for (i in 1:ncol(adj)){
+    for (j in 1:ncol(adj)){
+      if (adj[[i,j]] == 1){
         k <- k+1
-        tmp2[k,1] <- colnames(seq.adj)[j]
-        tmp2[k,2] <- rownames(seq.adj)[i]
+        tmp2[k,1] <- colnames(adj)[j]
+        tmp2[k,2] <- rownames(adj)[i]
         tmp2[k,3] <- 1
-      } else if(seq.adj[[i,j]] == 2){
+      } else if(adj[[i,j]] == 2){
         k <- k+1
-        tmp2[k,1] <- colnames(seq.adj)[j]
-        tmp2[k,2] <- rownames(seq.adj)[i]
+        tmp2[k,1] <- colnames(adj)[j]
+        tmp2[k,2] <- rownames(adj)[i]
         tmp2[k,3] <- 2
-      }else if(seq.adj[[i,j]] == 0){
+      }else if(adj[[i,j]] == 0){
         k <- k+1
-        tmp2[k,1] <- colnames(seq.adj)[j]
-        tmp2[k,2] <- rownames(seq.adj)[i]
+        tmp2[k,1] <- colnames(adj)[j]
+        tmp2[k,2] <- rownames(adj)[i]
         tmp2[k,3] <- 0
       }
     }
   }
-  
   plot_net(tmp2)
 }
 

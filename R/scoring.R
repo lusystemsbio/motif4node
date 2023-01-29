@@ -359,11 +359,16 @@ cal_ecdf_pca <- function(PCA){
   return(ecdfs)
 }
 
-# Compare the state distributions of two four-node circuits,
-# find the most matched genes, 
-# and project the simulated gene expression data of the 2nd circuit to the PCs of the 1st circuit
+#' Compare the state distributions of two four-node circuits, find the most matched genes, 
+#' and project the simulated gene expression data of the 2nd circuit to the PCs of the 1st circuit
+#' @param rset1 sRACIPE object. RACIPE simulation data for the first circuit
+#' @param rset2 sRACIPE object. RACIPE simulation data for the second circuit
+#' @return Numeric matrix. PC coordinates of RACIPE simulated gene expression of 
+#' the second circuit projected onto the PCs of the RACIPE simulated gene expression of 
+#' the first circuit
 #' @import sRACIPE
 #' @import SummarizedExperiment
+#' @export
 map_and_project <- function(rset1, rset2){
   tmp <- rset1
   tlog_gex <- log2(t(assay(tmp)))
@@ -649,8 +654,7 @@ gene_mapping_ecdf <- function(ECDF1, ECDF2){
 
 # Compute the minimum distances of the state distributions between a four-node circuit and experimental data.
 # ECDF1: experimental; ECDF2: circuit simulations.
-# R1 and R2 not specified in its call m.l.
-dist_to_experimental_2node <- function(ECDF1, ECDF2, R1, R2){
+dist_to_experimental_2node <- function(ECDF1, ECDF2){
   x <- ECDF1
   y <- ECDF2
   scores <- vector(length = 12)
@@ -668,58 +672,58 @@ dist_to_experimental_2node <- function(ECDF1, ECDF2, R1, R2){
   i.BD <- y[[9]]
   i.CD <- y[[10]]
   #1 AB
-  ks.AB.1 <- cal_ks_test(AB.1, i.AB, R1,R2,.01)
-  ks.A <- cal_ks_test(a.1, i.a, R1,R2,.01)
-  ks.B <- cal_ks_test(b.1, i.b, R1,R2,.01)
+  ks.AB.1 <- cal_ks_test(AB.1, i.AB, -5,5,.01)
+  ks.A <- cal_ks_test(a.1, i.a, -5,5,.01)
+  ks.B <- cal_ks_test(b.1, i.b, -5,5,.01)
   scores[[1]] <- mean(c(ks.AB.1, ks.A, ks.B))
   #2 AD
-  ks.AB.3 <- cal_ks_test(AB.1, i.AD, R1,R2,.01)
-  ks.A <- cal_ks_test(a.1, i.a, R1,R2,.01)
-  ks.B <- cal_ks_test(b.1, i.d, R1,R2,.01)
+  ks.AB.3 <- cal_ks_test(AB.1, i.AD, -5,5,.01)
+  ks.A <- cal_ks_test(a.1, i.a, -5,5,.01)
+  ks.B <- cal_ks_test(b.1, i.d, -5,5,.01)
   scores[[2]] <- mean(c(ks.AB.3,ks.A, ks.B))
   #3 DA
-  ks.A <- cal_ks_test(a.1, i.d, R1,R2,.01)
-  ks.B <- cal_ks_test(b.1, i.a, R1,R2,.01)
+  ks.A <- cal_ks_test(a.1, i.d, -5,5,.01)
+  ks.B <- cal_ks_test(b.1, i.a, -5,5,.01)
   scores[[3]] <- mean(c(ks.AB.3,ks.A, ks.B))
   #4 AC
-  ks.AB.7 <- cal_ks_test(AB.1, i.AC, R1,R2,.01)
-  ks.A <- cal_ks_test(a.1, i.a, R1,R2,.01)
-  ks.B <- cal_ks_test(b.1, i.c, R1,R2,.01)
+  ks.AB.7 <- cal_ks_test(AB.1, i.AC, -5,5,.01)
+  ks.A <- cal_ks_test(a.1, i.a, -5,5,.01)
+  ks.B <- cal_ks_test(b.1, i.c, -5,5,.01)
   scores[[4]] <- mean(c(ks.AB.7, ks.A, ks.B))
   #5 CA
-  ks.A <- cal_ks_test(a.1, i.c, R1,R2,.01)
-  ks.B <- cal_ks_test(b.1, i.a, R1,R2,.01)
+  ks.A <- cal_ks_test(a.1, i.c, -5,5,.01)
+  ks.B <- cal_ks_test(b.1, i.a, -5,5,.01)
   scores[[5]] <- mean(c(ks.AB.7, ks.A, ks.B))
   #6 CD
-  ks.AB.11 <- cal_ks_test(AB.1, i.CD, R1,R2,.01)
-  ks.A <- cal_ks_test(a.1, i.c, R1,R2,.01)
-  ks.B <- cal_ks_test(b.1, i.d, R1,R2,.01)
+  ks.AB.11 <- cal_ks_test(AB.1, i.CD, -5,5,.01)
+  ks.A <- cal_ks_test(a.1, i.c, -5,5,.01)
+  ks.B <- cal_ks_test(b.1, i.d, -5,5,.01)
   scores[[6]] <- mean(c(ks.AB.11, ks.A, ks.B))
   #7 DC
-  ks.A <- cal_ks_test(a.1, i.d, R1,R2,.01)
-  ks.B <- cal_ks_test(b.1, i.c, R1,R2,.01)
+  ks.A <- cal_ks_test(a.1, i.d, -5,5,.01)
+  ks.B <- cal_ks_test(b.1, i.c, -5,5,.01)
   scores[[7]] <- mean(c(ks.AB.11, ks.A, ks.B))
   #8 CB
-  ks.AB.15 <- cal_ks_test(AB.1, i.BC, R1,R2,.01)
-  ks.A <- cal_ks_test(a.1, i.c, R1,R2,.01)
-  ks.B <- cal_ks_test(b.1, i.b, R1,R2,.01)
+  ks.AB.15 <- cal_ks_test(AB.1, i.BC, -5,5,.01)
+  ks.A <- cal_ks_test(a.1, i.c, -5,5,.01)
+  ks.B <- cal_ks_test(b.1, i.b, -5,5,.01)
   scores[[8]] <- mean(c(ks.AB.15, ks.A, ks.B))
   #9 BC
-  ks.A <- cal_ks_test(a.1, i.b, R1,R2,.01)
-  ks.B <- cal_ks_test(b.1, i.c, R1,R2,.01)
+  ks.A <- cal_ks_test(a.1, i.b, -5,5,.01)
+  ks.B <- cal_ks_test(b.1, i.c, -5,5,.01)
   scores[[9]] <- mean(c(ks.AB.15, ks.A, ks.B))
   #10 BD
-  ks.AB.19 <- cal_ks_test(AB.1, i.BD, R1,R2,.01)
-  ks.A <- cal_ks_test(a.1, i.b, R1,R2,.01)
-  ks.B <- cal_ks_test(b.1, i.d, R1,R2,.01)
+  ks.AB.19 <- cal_ks_test(AB.1, i.BD, -5,5,.01)
+  ks.A <- cal_ks_test(a.1, i.b, -5,5,.01)
+  ks.B <- cal_ks_test(b.1, i.d, -5,5,.01)
   scores[[10]] <- mean(c(ks.AB.19, ks.A, ks.B))
   #11 DB
-  ks.A <- cal_ks_test(a.1, i.d, R1,R2,.01)
-  ks.B <- cal_ks_test(b.1, i.b, R1,R2,.01)
+  ks.A <- cal_ks_test(a.1, i.d, -5,5,.01)
+  ks.B <- cal_ks_test(b.1, i.b, -5,5,.01)
   scores[[11]] <- mean(c(ks.AB.19, ks.A, ks.B))
   #12 BA
-  ks.A <- cal_ks_test(a.1, i.b, R1,R2,.01)
-  ks.B <- cal_ks_test(b.1, i.a, R1,R2,.01)
+  ks.A <- cal_ks_test(a.1, i.b, -5,5,.01)
+  ks.B <- cal_ks_test(b.1, i.a, -5,5,.01)
   scores[[12]] <- mean(c(ks.AB.1, ks.A, ks.B))
   return(scores[[which.min(scores)]])
 }

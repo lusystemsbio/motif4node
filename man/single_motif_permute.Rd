@@ -9,7 +9,8 @@ single_motif_permute(
   all.scores,
   decreasing = T,
   topCircuits = 600,
-  no_perm
+  nhill = 20,
+  num_perm = 1000
 )
 }
 \arguments{
@@ -21,10 +22,13 @@ single_motif_permute(
 
 \item{topCircuits}{Integer. Number of top circuits for the enrichment analysis. Default 600.}
 
-\item{no_perm}{Integer. Number of permutations.}
+\item{nhill}{Integer/Numeric. Hill coefficient for the Hill function as the weighting factor for motif counts, 
+large n makes the Hill function more binary. Default 20.}
+
+\item{num_perm}{Integer. Number of permutations. (1000)}
 }
 \value{
-List of permuted enrichment scores.
+Numeric vector. Adjusted p values for the enrichement of each two-node circuit motif (a total of 39)
 }
 \description{
 Generate permutations for p-value calculations

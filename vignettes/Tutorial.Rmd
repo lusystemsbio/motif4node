@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.width =
 
 # Introduction
 
-Motif4node is a package that allows systematic, high-throughput, and quantitative evaluation of how small transcriptional regulatory circuit motifs, and their coupling, responsible for a particular structure of gene expression state distributions. Moitf4node ultizes an ensemble-based mathematical modeling method ([sRACIPE](https://www.bioconductor.org/packages/release/bioc/html/sRACIPE.html)) for circuit simulations. In this tutorial, we illustrate the usage of motif4node.
+Motif4node is a package that allows systematic, high-throughput, and quantitative evaluation of how small transcriptional regulatory circuit motifs, and their coupling, responsible for a particular structure of gene expression state distributions. Moitf4node utilizes an ensemble-based mathematical modeling method ([sRACIPE](https://www.bioconductor.org/packages/release/bioc/html/sRACIPE.html)) for circuit simulations. In this tutorial, we illustrate the usage of motif4node.
 
 # Load circuit topology and perform RACIPE simulations
 
@@ -29,8 +29,9 @@ Motif4node includes a data set, containing the topologies of all 60212 non-redun
 library(motif4node)
 library(ggplot2)
 library(pheatmap)
+library(sRACIPE)
 set.seed(43)
-data("all.circuits")
+data("all_circuits")
 ```
 
 The function *sim_4node* allows to simulate with *sRACIPE* a four-node circuit, whose circuit index in the data set *all.circutis* is specified by the argument *index*. Although we  only simulate 200 models (argument numModels) for illustration in this tutorial, 10,000 models are usually recommended for more robust statistics. 
@@ -61,7 +62,7 @@ plt[[3]]
 
 # Genereate RACIPE data for all (or multiple) circuits
 
-To utilize the package for motif enrichment analysis, we first need to generate RACIPE simulations for all 60212 non-redundant 4-node gene circuits. Below illustrated how to preform RACIPE simulations using *sim_4node* for ten random circuits. Users can use a similar approach to apply this analysis to all circuits. Note that this step would be slow and generate huge data files, but just needs to be done for the first time. (m.l. comments on computational cost (time, storage, memory, and number of parallel jobs, etc.)) Again, we recommend to simulate 10,000 models for each circuit.
+To utilize the package for motif enrichment analysis, we first need to generate RACIPE simulations for all 60212 non-redundant 4-node gene circuits. Below illustrated how to preform RACIPE simulations using *sim_4node* for ten random circuits. Users can use a similar approach to apply this analysis to all circuits. Note that this step would be time consuming (about days using 60 CPU nodes of E5-2680v4@2.40GHz) and generate huge data files (168GB), but just needs to be done for the first time. Again, we recommend to simulate 10,000 models for each circuit.
 
 ```{r, results = "hide"}
 circuit.list = sample(1:length(all.circuits), 10, replace = F)
@@ -70,15 +71,15 @@ test = lapply(X = circuit.list, FUN = sim_4node, Gaussian = F, numModels = 200, 
 
 # Rank each circiut by a triangularity score
 
-Once the simulation data has been generated, we score all circuits according to the simulated gene expression profiles. Here, we illustrate this step by a scoring function *trig_score* for ranking circuits with a triangular gene expression distribution. The higher the scores, the more representative the circuits with  a triangular gene expression distribution. After applying this scoring function to all 60212 circuits, we will 
-
+Once the simulation data has been generated, we score all circuits according to the simulated gene expression profiles. Here, we illustrate this step by a scoring function *trig_score* for ranking circuits with a triangular gene expression distribution. The higher the scores, the more representative the circuits with  a triangular gene expression distribution. 
 
 ```{r}
 scores_test = lapply(test, trig_score)
 scoremat = data.frame(score = unlist(scores_test), index = 1:length(scores_test))
 scoremat[order(scoremat$score, decreasing = T),]
 ```
-Here, we load a score matrix that we used in the paper for xxx (add the purpose m.l.).
+
+Here, we read a pre-calculated score matrix for the triangularity scores of all 60212 four-node circuits.
 
 ```{r}
 load("distances.2node.rdata")
@@ -93,30 +94,43 @@ We then can perform single motif and motif coupling analysis all using the funct
 motif_results = motif_analysis(all.circuits = all.circuits, all.scores = scoremat, ylim = c(-2,2), 
                                color_breaks = seq(-4,4,by=0.2), filename = "Test", decreasing = F, topCircuits = 218)
 ```
-The outcome of the single motif enrichment analysis. In these plots, the five color groups 1 – 5 represent two-node motifs with one activation between genes, motifs with one inhibition between genes, motifs with mutual activation, motifs with mutual inhibition, and motifs with both activation and inhibition between genes, respectively.
+
+The outcome of the single motif enrichment analysis. In these plots, the five color groups 1 – 5 represent two-node motifs with one activation between genes, motifs with one inhibition between genes, motifs with mutual activation, motifs with mutual inhibition, and motifs with both activation and inhibition between genes, respectively. The plots for the motif enrichment analysis are saved in PDF files with the prefix specified in *filename*. 
 
 ```{r, fig.width = 9, fig.height = 5}
 motif_results$single # single motif enrichment
 ```
 
-We can also perform statistical evaluation of the motif enrichment by a permutation test. (mention single_motif_permute)
+We can also perform statistical evaluation of the motif enrichment by a permutation test. Below shows a usage of the *single_motif_permute* function to compute adjusted p-values for the single-motif enrichment analysis (slow for 1000 permutations).
+
+```
+adj_pvalues = single_motif_permute(all.circuits = all.circuits, all.scores = scoremat, decreasing = F, topCircuits = 218, num_perm = 1000) 
+```
 
 # Explore the most enriched circuit motifs
 
-plot_motif and/or plot_adj
+Visualize the topmost enriched two-node circuit motif (*i.e.*, motif #39). 
 
-gen_network_scalefree
+```{r}
+m = generate_motif_list()
+#plot_motif(36, m)
+```
 
-# Others?
-analysis_circuit_4node
-analysis_circuit_2node
-map_and_project
+<center> ![](circuit_2.png){width=20%} </center>
 
-Show a few top circuits and their gene expression distributions. (to me a PCA plot is sufficient in this tutorial)
+Generate a 20-node scale-free large gene network with the top-three most enriched two-node circuit motifs
+
+```{r}
+net = gen_network_scalefree(num_nodes = 20, motif_list = m, motif_choice = c(36,1,31))
+#plot_adj(net)
+```
+
+<center> ![](network.png){width=60%} </center>
 
 # References
 
-Clauss B & Lu M. A Quantitative Evaluation of Topological Motifs and Their Coupling in Gene Circuit State Distributions. bioRxiv 2022.07.19.500691; doi: https://doi.org/10.1101/2022.07.19.500691
+Clauss B & Lu M. A Quantitative Evaluation of Topological Motifs and Their Coupling in Gene Circuit State Distributions. iScience; doi: https://doi.org/10.1016/j.isci.2023.106029
+
 
 # Session Information
 
