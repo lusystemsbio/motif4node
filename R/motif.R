@@ -189,10 +189,13 @@ single_motif_permute <- function(all.circuits = all.circuits, all.scores, decrea
   outcome_single = enrichment_single(all.circuits = all.circuits, all.scores = all.scores, motif_list = motif_list, 
                                      new_ind = new_ind, decreasing = decreasing, topCircuits = topCircuits, nhill = nhill)
   
-  tmp = lapply(1:num_perm, gen.ran.enrich)
-  return(lapply(tmp, p.adjust, method = "BH")) 
+  perm_values = replicate(num_perm, gen_ran_enrich(all.circuits = all.circuits, all.scores = all.scores,
+                                                   motif_list = motif_list, new_ind = new_ind, decreasing = decreasing, 
+                                                   topCircuits = topCircuits, nhill = nhill))
+  
+  ### additional step, ml.
+  return(lapply(perm_values, p.adjust, method = "BH")) 
 }
-
 
 #' Motif enrichment analysis for single two-node circuit motifs
 #' @param all.circuits List of the topologies of all 60212 non-redundant 4-node circuits. Default "all.circuits" from the package data.
@@ -724,11 +727,4 @@ adj_to_tpo <- function(adj){
   #  }
   #  tmp2 <- tmp2[tmp2$type != 0,]
   return(tmp2)
-}
-#generate motif permutation
-gen.ran.enrich <- function(meh){
-  meh = meh
-  scoremat[,2] = sample(all.scores[,2])
-  return(enrichment_single(all.circuits = all.circuits, all.scores = scoremat, motif_list = motif_list, 
-                           new_ind = new_ind, topCircuit = topCircuits))
 }
