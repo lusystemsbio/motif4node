@@ -184,6 +184,7 @@ generate_motif_list <- function() {
 #' @export
 single_motif_permute <- function(all.circuits = all.circuits, all.scores, decreasing = T, topCircuits = 600, nhill = 20,
                                  num_perm = 1000){
+  p.vec = integer(length = 39)
   new_ind = generate_index_conversion()
   motif_list = generate_motif_list()
   outcome_single = enrichment_single(all.circuits = all.circuits, all.scores = all.scores, motif_list = motif_list, 
@@ -192,9 +193,23 @@ single_motif_permute <- function(all.circuits = all.circuits, all.scores, decrea
   perm_values = replicate(num_perm, gen_ran_enrich(all.circuits = all.circuits, all.scores = all.scores,
                                                    motif_list = motif_list, new_ind = new_ind, decreasing = decreasing, 
                                                    topCircuits = topCircuits, nhill = nhill))
-  
-  ### additional step, ml.
-  return(lapply(perm_values, p.adjust, method = "BH")) 
+  for(i in 1:nrow(outcome_single)){
+    if(sign(outcome_single[i,1]) == 1){
+      otr = lapply(perm_values, function(x){
+      tmp = unlist(x)
+      return(tmp[[i]])
+      })
+     rslt =  1-((sum(outcome_single[i,1] >= otr))/num_perm)
+    } else{
+      otr = lapply(perm_values, function(x){
+        tmp = unlist(x)
+        return(tmp[[i]])
+      })
+      rslt= 1-((sum(outcome_single[i,1] <= otr))/num_perm)
+    }
+   p.vec[[i]] = rslt   
+  }
+  return(lapply(p.vec, p.adjust, method = "BH")) 
 }
 
 #' Motif enrichment analysis for single two-node circuit motifs
